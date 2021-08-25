@@ -20,8 +20,8 @@ bot.variables({
 talk: "0",
 req: "400",
 level: "1",
-noting: "0",
-noting2: "0",
+nothing: "0",
+nothing2: "0",
 }) 
 
 bot.command({
