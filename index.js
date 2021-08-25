@@ -17,29 +17,31 @@ bot.onMessage(); // Allows Commands to Executed
 
 //for the variables
 bot.variables({
-talk: "0",
+exp: "0",
 req: "400",
-level: "1",
-nothing: "0",
-nothing2: "0",
+lvl: "1",
 }) 
 
 bot.command({
 name: "$alwaysExecute",
-code: `$setUserVar[$replaceText[$replaceText[%$checkCondition[$getUserVar[talk]>$getUserVar[req]]%;%true%;talk;1];%false%;nothing2;1];0]
- 
-$setUserVar[$replaceText[$replaceText[%$checkCondition[$getUserVar[talk]>$getUserVar[req]]%;%true%;nothing2;1];%false%;talk;1];$sum[$getUserVar[$replaceText[$replaceText[%$checkCondition[$getUserVar[talk]>$getUserVar[req]]%;%true%;nothing2;1];%false%;talk;1]];$random[5;25]]]
- 
-$$replaceText[$replaceText[%$checkCondition[$getUserVar[talk]>$getUserVar[req]]%;%true%;channelSendMessage;1];%false%;setServerVar;1][$replaceText[$replaceText[%$checkCondition[$getUserVar[talk]>$getUserVar[req]]%;%true%;$channelID;1];%false%;nothing;1];<@$authorID> You leveled up! Now your new level is $sum[$getUserVar[level];1]]
- 
-$setUserVar[$replaceText[$replaceText[%$checkCondition[$getUserVar[talk]>$getUserVar[req]]%;%true%;level;1];%false%;nothing2;1];$sum[$getUserVar[$replaceText[$replaceText[%$checkCondition[$getUserVar[talk]>$getUserVar[req]]%;%true%;level;1];%false%;nothing2;1]];1]]
-$setUserVar[$replaceText[$replaceText[%$checkCondition[$getUserVar[talk]>$getUserVar[req]]%;%true%;req;1];%false%;nothing2;1];$sum[$getUserVar[$replaceText[$replaceText[%$checkCondition[$getUserVar[talk]>$getUserVar[req]]%;%true%;req;1];%false%;nothing2;1]];$random[100;220]]]
-`
+code: `$if[$sum[$getUserVar[exp];$random[15;30]]>=$getUserVar[req]]
+
+<@$authorID>, you have reached level $sum[$getUserVar[lvl];1]! GG.
+
+$setUserVar[exp;$sub[$sum[$getUserVar[exp];$random[15;30]];$getUserVar[req]]]
+
+$setUserVar[req;$sum[$getUserVar[req];100]]
+
+$setUserVar[lvl;$sum[$getUserVar[lvl];1]]
+$else
+
+$setUserVar[exp;$sum[$getUserVar[exp];$random[15;30]]]
+
+$endif`
 })
 
 bot.command({
 name: "rank",
 code: `$color[$random[111111;999999]]
-$image[https://vacefron.nl/api/rankcard?username=$replaceText[$username[$mentioned[1;yes]]; ;+;-1]&avatar=$userAvatar[$mentioned[1;yes]]?size=4096&level=$getUserVar[level;$mentioned[1;yes]]&rank=&currentxp=$getUserVar[talk;$mentioned[1;yes]]&nextlevelxp=$getUserVar[req;$mentioned[1;yes]]&previouslevelxp=0&custombg=https://cdn.discordapp.com/attachments/775757240648466452/791348420844716052/1608742528817.jpg&xpcolor=F8F8F9&isboosting=false]
-$footer[$username[$mentioned[1;yes]] needs $replaceText[$sub[$sum[$getUserVar[req;$mentioned[1;yes]];1];$getUserVar[talk;$mentioned[1;yes]]];-; ;1] more of EXP to level up]`})
-
+$image[https://vacefron.nl/api/rankcard?username=$replaceText[$username[$mentioned[1;yes]]; ;+;-1]&avatar=$userAvatar[$mentioned[1;yes]]?size=4096&level=$getUserVar[lvl;$mentioned[1;yes]]&rank=&currentxp=$getUserVar[exp;$mentioned[1;yes]]&nextlevelxp=$getUserVar[req;$mentioned[1;yes]]&previouslevelxp=0&custombg=https://cdn.discordapp.com/attachments/775757240648466452/791348420844716052/1608742528817.jpg&xpcolor=F8F8F9&isboosting=false]
+$footer[$username[$mentioned[1;yes]] needs $replaceText[$sub[$sum[$getUserVar[req;$mentioned[1;yes]];1];$getUserVar[exp;$mentioned[1;yes]]];-; ;1] more of EXP to level up]`})
